@@ -78,22 +78,21 @@ def list():
 
 	if not DEBUG:
 		questions = Question.query.order_by(Question.id.desc()).paginate(page, QUESTIONS_PER_PAGE, False)
-	else:
-		questions = get_test_questions()
+		next_url = url_for('list', page=questions.next_num) \
+			if questions.has_next else None
+		prev_url = url_for('list', page=questions.prev_num) \
+			if questions.has_prev else None
 
-	next_url = url_for('list', page=questions.next_num) \
-		if questions.has_next else None
-	prev_url = url_for('list', page=questions.prev_num) \
-		if questions.has_prev else None
-
-	if not DEBUG:
 		return render_template(
 			'list.html',
 			q_list=[question.to_dict() for question in questions.items],
 			next_url=next_url,
 			prev_url=prev_url
 		)
+
 	else:
+		questions = get_test_questions()
+
 		return render_template(
 			'list.html',
 			q_list=[question.to_dict() for question in questions],
