@@ -3,8 +3,11 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+from settings import DEBUG
+from testdata import get_test_questions
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
 
@@ -71,7 +74,10 @@ def delete(qid):
 
 @app.route('/', methods=['GET'])
 def list():
-	questions = Question.query.order_by(Question.id.desc())
+	if not DEBUG:
+		questions = Question.query.order_by(Question.id.desc())
+	else:
+		questions = get_test_questions()
 
 	return render_template(
 		'list.html', 
