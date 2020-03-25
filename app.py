@@ -1,9 +1,9 @@
 import os
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-from settings import DEBUG
+from settings import DEBUG, QUESTIONS_PER_PAGE
 from testdata import get_test_questions
 
 app = Flask(__name__)
@@ -74,15 +74,30 @@ def delete(qid):
 
 @app.route('/', methods=['GET'])
 def list():
+	page = request.args.get('page', 1, type=int)
+
 	if not DEBUG:
-		questions = Question.query.order_by(Question.id.desc())
+		questions = Question.query.order_by(Question.id.desc()).paginate(page, QUESTIONS_PER_PAGE, False)
 	else:
 		questions = get_test_questions()
 
-	return render_template(
-		'list.html', 
-		q_list=[question.to_dict() for question in questions]
-	)
+	next_url = url_for('list', page=questions.next_num) \
+		if questions.has_next else None
+	prev_url = url_for('list', page=questions.prev_num) \
+		if questions.has_prev else None
+
+	if not DEBUG:
+		return render_template(
+			'list.html',
+			q_list=[question.to_dict() for question in questions.items],
+			next_url=next_url,
+			prev_url=prev_url
+		)
+	else:
+		return render_template(
+			'list.html',
+			q_list=[question.to_dict() for question in questions],
+		)
 
 
 @app.route('/question/<qid>', methods=['GET', 'POST'])
