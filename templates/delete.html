@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action="/question/delete/{{ q.id }}" method="post">
+		<div class="form-group">
+			<label for="security-password">Security Password</label>
+			<input type="text" name="security-password" class="form-control" id="security-password" required>
+		</div>
+		<button class="btn btn-danger" type="submit">Delete</button>
+	</form>
+{% endblock %}
+

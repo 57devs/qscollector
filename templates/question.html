@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action="/question/add" method="post">
+		<div class="form-group">
+			<label for="qtitle">Question title</label>
+			<input type="text" name="title" class="form-control" id="qtitle" placeholder="What's the best thing about your gender?" required>
+		</div>
+		<div class="form-group">
+			<label for="choice-a">Choice 1</label>
+			<input type="text" name="choice-a" class="form-control" id="choice-a" required>
+		</div>
+		<div class="form-group">
+			<label for="choice-d">Choice 2</label>
+			<input type="text" name="choice-b" class="form-control" id="choice-b" required>
+		</div>
+		<div class="form-group">
+			<label for="choice-d">Choice 3</label>
+			<input type="text" name="choice-c" class="form-control" id="choice-c" required>
+		</div>
+		<div class="form-group">
+			<label for="choice-d">Choice 4</label>
+			<input type="text" name="choice-d" class="form-control" id="choice-d" required>
+		</div>
+
+		<div class="form-group">
+			<label for="correct-choice">Correct choice</label>
+			<input type="text" name="correct-choice" class="form-control" id="correct-choice" required>
+		</div>
+		<div class="form-group">
+			<label for="difficulty">Difficulty</label>
+			<select class="form-control" name="difficulty" id="difficulty" required>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="tags">Tags</label>
+			<input type="text" class="form-control" name="tags" id="tags" data-role="tagsinput">
+		</div>
+		<button class="btn btn-success btn-block" type="submit">Save</button>
+	</form>
+{% endblock %}
