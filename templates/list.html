@@ -29,6 +29,17 @@
 				</td>
 			</tr>
 			{% endfor %}
+
+			<div class="clearfix">
+				{% if prev_url %}
+				<a class="btn btn-primary float-left" href="{{ prev_url }}">&larr; Previous Page</a>
+				{% endif %}
+
+				{% if next_url %}
+				<a class="btn btn-primary float-right" href="{{ next_url }}">Next Page &rarr;</a>
+				{% endif %}
+        	</div>
+			<hr>
 		</tbody>
 	</table>
 {% endblock %}
