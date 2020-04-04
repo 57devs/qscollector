@@ -1,7 +1,9 @@
+import json
 import os
 
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify
 
 from settings import DEBUG, QUESTIONS_PER_PAGE
 from testdata import get_test_questions
@@ -31,6 +33,24 @@ class Question(db.Model):
 			'difficulty': self.difficulty,
 			'tags': self.tags
 		}
+
+
+@app.route('/question/fill', methods=['GET', 'POST'])
+def fill():
+	Question.query.delete()
+	with open('questions.json') as questions:
+		questions = json.load(questions)
+		for question in questions:
+			q = Question(
+				title=question['q'],
+				choices=','.join(question['c']),
+				correct_choice=question['co'],
+				difficulty=question['r'],
+				tags=[]
+			)
+			db.session.add(q)
+			db.session.commit()
+    return jsonify({})
 
 
 @app.route('/question/add', methods=['GET', 'POST'])
